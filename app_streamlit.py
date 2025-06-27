@@ -88,10 +88,10 @@ if search_button and search_query:
                             try:
                                 response = requests.get(cocktail['strDrinkThumb'])
                                 img = Image.open(BytesIO(response.content))
-                                st.image(img, use_column_width=True)
+                                st.image(img, use_container_width=True)
                             except:
                                 st.image("https://via.placeholder.com/300x200?text=No+Image", 
-                                       use_column_width=True)
+                                       use_container_width=True)
                         
                         # Basic info
                         st.caption(f"**Category:** {cocktail.get('strCategory', 'N/A')}")
@@ -102,8 +102,9 @@ if search_button and search_query:
                         for j in range(1, 16):
                             ingredient = cocktail.get(f'strIngredient{j}')
                             if ingredient:
-                                measure = cocktail.get(f'strMeasure{j}', '').strip()
-                                ingredients.append(f"- {measure} {ingredient}" if measure else f"- {ingredient}")
+                                measure = cocktail.get(f'strMeasure{j}')
+                                measure_str = measure.strip() if measure and isinstance(measure, str) else ''
+                                ingredients.append(f"- {measure_str} {ingredient}" if measure_str else f"- {ingredient}")
                         
                         with st.expander("View Ingredients"):
                             st.markdown("\n".join(ingredients))
@@ -140,9 +141,9 @@ elif not search_button:
                     try:
                         response = requests.get(cocktail['strDrinkThumb'])
                         img = Image.open(BytesIO(response.content))
-                        st.image(img, use_column_width=True)
+                        st.image(img, use_container_width=True)
                     except:
                         st.image("https://via.placeholder.com/300x200?text=No+Image", 
-                               use_column_width=True)
+                               use_container_width=True)
                 st.markdown(f"*{cocktail.get('strCategory', 'Cocktail')}*")
                 st.markdown("---")
